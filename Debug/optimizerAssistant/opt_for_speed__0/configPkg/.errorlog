@@ -1,0 +1,4 @@
+Fatal error #1966: cannot open source file "C:/ti/TivaWare_C_Series-2.1.1.71/include": Invalid argument
+1 catastrophic error detected in the compilation of "package/cfg/acsndSensor_pem4f.c".
+Compilation terminated.
+gmake.exe: *** [package/cfg/acsndSensor_pem4f.oem4f] Error 1
