@@ -15,90 +15,90 @@ XDCCFGDIR = package/cfg/
 # in the event that some included BOM script changes.
 #
 ifneq (clean,$(MAKECMDGOALS))
-C:/ti/xdctools_3_31_01_33_core/packages/xdc/utils.js:
-package.mak: C:/ti/xdctools_3_31_01_33_core/packages/xdc/utils.js
-C:/ti/xdctools_3_31_01_33_core/packages/xdc/xdc.tci:
-package.mak: C:/ti/xdctools_3_31_01_33_core/packages/xdc/xdc.tci
-C:/ti/xdctools_3_31_01_33_core/packages/xdc/template.xs:
-package.mak: C:/ti/xdctools_3_31_01_33_core/packages/xdc/template.xs
-C:/ti/xdctools_3_31_01_33_core/packages/xdc/om2.xs:
-package.mak: C:/ti/xdctools_3_31_01_33_core/packages/xdc/om2.xs
-C:/ti/xdctools_3_31_01_33_core/packages/xdc/xmlgen.xs:
-package.mak: C:/ti/xdctools_3_31_01_33_core/packages/xdc/xmlgen.xs
-C:/ti/xdctools_3_31_01_33_core/packages/xdc/xmlgen2.xs:
-package.mak: C:/ti/xdctools_3_31_01_33_core/packages/xdc/xmlgen2.xs
-C:/ti/xdctools_3_31_01_33_core/packages/xdc/Warnings.xs:
-package.mak: C:/ti/xdctools_3_31_01_33_core/packages/xdc/Warnings.xs
-C:/ti/xdctools_3_31_01_33_core/packages/xdc/IPackage.xs:
-package.mak: C:/ti/xdctools_3_31_01_33_core/packages/xdc/IPackage.xs
-C:/ti/xdctools_3_31_01_33_core/packages/xdc/package.xs:
-package.mak: C:/ti/xdctools_3_31_01_33_core/packages/xdc/package.xs
-C:/ti/xdctools_3_31_01_33_core/packages/xdc/services/global/Clock.xs:
-package.mak: C:/ti/xdctools_3_31_01_33_core/packages/xdc/services/global/Clock.xs
-C:/ti/xdctools_3_31_01_33_core/packages/xdc/services/global/Trace.xs:
-package.mak: C:/ti/xdctools_3_31_01_33_core/packages/xdc/services/global/Trace.xs
-C:/ti/xdctools_3_31_01_33_core/packages/xdc/bld/bld.js:
-package.mak: C:/ti/xdctools_3_31_01_33_core/packages/xdc/bld/bld.js
-C:/ti/xdctools_3_31_01_33_core/packages/xdc/bld/BuildEnvironment.xs:
-package.mak: C:/ti/xdctools_3_31_01_33_core/packages/xdc/bld/BuildEnvironment.xs
-C:/ti/xdctools_3_31_01_33_core/packages/xdc/bld/PackageContents.xs:
-package.mak: C:/ti/xdctools_3_31_01_33_core/packages/xdc/bld/PackageContents.xs
-C:/ti/xdctools_3_31_01_33_core/packages/xdc/bld/_gen.xs:
-package.mak: C:/ti/xdctools_3_31_01_33_core/packages/xdc/bld/_gen.xs
-C:/ti/xdctools_3_31_01_33_core/packages/xdc/bld/Library.xs:
-package.mak: C:/ti/xdctools_3_31_01_33_core/packages/xdc/bld/Library.xs
-C:/ti/xdctools_3_31_01_33_core/packages/xdc/bld/Executable.xs:
-package.mak: C:/ti/xdctools_3_31_01_33_core/packages/xdc/bld/Executable.xs
-C:/ti/xdctools_3_31_01_33_core/packages/xdc/bld/Repository.xs:
-package.mak: C:/ti/xdctools_3_31_01_33_core/packages/xdc/bld/Repository.xs
-C:/ti/xdctools_3_31_01_33_core/packages/xdc/bld/Configuration.xs:
-package.mak: C:/ti/xdctools_3_31_01_33_core/packages/xdc/bld/Configuration.xs
-C:/ti/xdctools_3_31_01_33_core/packages/xdc/bld/Script.xs:
-package.mak: C:/ti/xdctools_3_31_01_33_core/packages/xdc/bld/Script.xs
-C:/ti/xdctools_3_31_01_33_core/packages/xdc/bld/Manifest.xs:
-package.mak: C:/ti/xdctools_3_31_01_33_core/packages/xdc/bld/Manifest.xs
-C:/ti/xdctools_3_31_01_33_core/packages/xdc/bld/Utils.xs:
-package.mak: C:/ti/xdctools_3_31_01_33_core/packages/xdc/bld/Utils.xs
-C:/ti/xdctools_3_31_01_33_core/packages/xdc/bld/ITarget.xs:
-package.mak: C:/ti/xdctools_3_31_01_33_core/packages/xdc/bld/ITarget.xs
-C:/ti/xdctools_3_31_01_33_core/packages/xdc/bld/ITarget2.xs:
-package.mak: C:/ti/xdctools_3_31_01_33_core/packages/xdc/bld/ITarget2.xs
-C:/ti/xdctools_3_31_01_33_core/packages/xdc/bld/ITarget3.xs:
-package.mak: C:/ti/xdctools_3_31_01_33_core/packages/xdc/bld/ITarget3.xs
-C:/ti/xdctools_3_31_01_33_core/packages/xdc/bld/ITargetFilter.xs:
-package.mak: C:/ti/xdctools_3_31_01_33_core/packages/xdc/bld/ITargetFilter.xs
-C:/ti/xdctools_3_31_01_33_core/packages/xdc/bld/package.xs:
-package.mak: C:/ti/xdctools_3_31_01_33_core/packages/xdc/bld/package.xs
+/Applications/ti/xdctools_3_32_02_25_core/packages/xdc/utils.js:
+package.mak: /Applications/ti/xdctools_3_32_02_25_core/packages/xdc/utils.js
+/Applications/ti/xdctools_3_32_02_25_core/packages/xdc/xdc.tci:
+package.mak: /Applications/ti/xdctools_3_32_02_25_core/packages/xdc/xdc.tci
+/Applications/ti/xdctools_3_32_02_25_core/packages/xdc/template.xs:
+package.mak: /Applications/ti/xdctools_3_32_02_25_core/packages/xdc/template.xs
+/Applications/ti/xdctools_3_32_02_25_core/packages/xdc/om2.xs:
+package.mak: /Applications/ti/xdctools_3_32_02_25_core/packages/xdc/om2.xs
+/Applications/ti/xdctools_3_32_02_25_core/packages/xdc/xmlgen.xs:
+package.mak: /Applications/ti/xdctools_3_32_02_25_core/packages/xdc/xmlgen.xs
+/Applications/ti/xdctools_3_32_02_25_core/packages/xdc/xmlgen2.xs:
+package.mak: /Applications/ti/xdctools_3_32_02_25_core/packages/xdc/xmlgen2.xs
+/Applications/ti/xdctools_3_32_02_25_core/packages/xdc/Warnings.xs:
+package.mak: /Applications/ti/xdctools_3_32_02_25_core/packages/xdc/Warnings.xs
+/Applications/ti/xdctools_3_32_02_25_core/packages/xdc/IPackage.xs:
+package.mak: /Applications/ti/xdctools_3_32_02_25_core/packages/xdc/IPackage.xs
+/Applications/ti/xdctools_3_32_02_25_core/packages/xdc/package.xs:
+package.mak: /Applications/ti/xdctools_3_32_02_25_core/packages/xdc/package.xs
+/Applications/ti/xdctools_3_32_02_25_core/packages/xdc/services/global/Clock.xs:
+package.mak: /Applications/ti/xdctools_3_32_02_25_core/packages/xdc/services/global/Clock.xs
+/Applications/ti/xdctools_3_32_02_25_core/packages/xdc/services/global/Trace.xs:
+package.mak: /Applications/ti/xdctools_3_32_02_25_core/packages/xdc/services/global/Trace.xs
+/Applications/ti/xdctools_3_32_02_25_core/packages/xdc/bld/bld.js:
+package.mak: /Applications/ti/xdctools_3_32_02_25_core/packages/xdc/bld/bld.js
+/Applications/ti/xdctools_3_32_02_25_core/packages/xdc/bld/BuildEnvironment.xs:
+package.mak: /Applications/ti/xdctools_3_32_02_25_core/packages/xdc/bld/BuildEnvironment.xs
+/Applications/ti/xdctools_3_32_02_25_core/packages/xdc/bld/PackageContents.xs:
+package.mak: /Applications/ti/xdctools_3_32_02_25_core/packages/xdc/bld/PackageContents.xs
+/Applications/ti/xdctools_3_32_02_25_core/packages/xdc/bld/_gen.xs:
+package.mak: /Applications/ti/xdctools_3_32_02_25_core/packages/xdc/bld/_gen.xs
+/Applications/ti/xdctools_3_32_02_25_core/packages/xdc/bld/Library.xs:
+package.mak: /Applications/ti/xdctools_3_32_02_25_core/packages/xdc/bld/Library.xs
+/Applications/ti/xdctools_3_32_02_25_core/packages/xdc/bld/Executable.xs:
+package.mak: /Applications/ti/xdctools_3_32_02_25_core/packages/xdc/bld/Executable.xs
+/Applications/ti/xdctools_3_32_02_25_core/packages/xdc/bld/Repository.xs:
+package.mak: /Applications/ti/xdctools_3_32_02_25_core/packages/xdc/bld/Repository.xs
+/Applications/ti/xdctools_3_32_02_25_core/packages/xdc/bld/Configuration.xs:
+package.mak: /Applications/ti/xdctools_3_32_02_25_core/packages/xdc/bld/Configuration.xs
+/Applications/ti/xdctools_3_32_02_25_core/packages/xdc/bld/Script.xs:
+package.mak: /Applications/ti/xdctools_3_32_02_25_core/packages/xdc/bld/Script.xs
+/Applications/ti/xdctools_3_32_02_25_core/packages/xdc/bld/Manifest.xs:
+package.mak: /Applications/ti/xdctools_3_32_02_25_core/packages/xdc/bld/Manifest.xs
+/Applications/ti/xdctools_3_32_02_25_core/packages/xdc/bld/Utils.xs:
+package.mak: /Applications/ti/xdctools_3_32_02_25_core/packages/xdc/bld/Utils.xs
+/Applications/ti/xdctools_3_32_02_25_core/packages/xdc/bld/ITarget.xs:
+package.mak: /Applications/ti/xdctools_3_32_02_25_core/packages/xdc/bld/ITarget.xs
+/Applications/ti/xdctools_3_32_02_25_core/packages/xdc/bld/ITarget2.xs:
+package.mak: /Applications/ti/xdctools_3_32_02_25_core/packages/xdc/bld/ITarget2.xs
+/Applications/ti/xdctools_3_32_02_25_core/packages/xdc/bld/ITarget3.xs:
+package.mak: /Applications/ti/xdctools_3_32_02_25_core/packages/xdc/bld/ITarget3.xs
+/Applications/ti/xdctools_3_32_02_25_core/packages/xdc/bld/ITargetFilter.xs:
+package.mak: /Applications/ti/xdctools_3_32_02_25_core/packages/xdc/bld/ITargetFilter.xs
+/Applications/ti/xdctools_3_32_02_25_core/packages/xdc/bld/package.xs:
+package.mak: /Applications/ti/xdctools_3_32_02_25_core/packages/xdc/bld/package.xs
 package.mak: config.bld
-C:/ti/tirtos_tivac_2_14_00_10/products/bios_6_42_01_20/packages/ti/targets/ITarget.xs:
-package.mak: C:/ti/tirtos_tivac_2_14_00_10/products/bios_6_42_01_20/packages/ti/targets/ITarget.xs
-C:/ti/tirtos_tivac_2_14_00_10/products/bios_6_42_01_20/packages/ti/targets/C28_large.xs:
-package.mak: C:/ti/tirtos_tivac_2_14_00_10/products/bios_6_42_01_20/packages/ti/targets/C28_large.xs
-C:/ti/tirtos_tivac_2_14_00_10/products/bios_6_42_01_20/packages/ti/targets/C28_float.xs:
-package.mak: C:/ti/tirtos_tivac_2_14_00_10/products/bios_6_42_01_20/packages/ti/targets/C28_float.xs
-C:/ti/tirtos_tivac_2_14_00_10/products/bios_6_42_01_20/packages/ti/targets/package.xs:
-package.mak: C:/ti/tirtos_tivac_2_14_00_10/products/bios_6_42_01_20/packages/ti/targets/package.xs
-C:/ti/tirtos_tivac_2_14_00_10/products/bios_6_42_01_20/packages/ti/targets/arm/elf/IArm.xs:
-package.mak: C:/ti/tirtos_tivac_2_14_00_10/products/bios_6_42_01_20/packages/ti/targets/arm/elf/IArm.xs
-C:/ti/tirtos_tivac_2_14_00_10/products/bios_6_42_01_20/packages/ti/targets/arm/elf/package.xs:
-package.mak: C:/ti/tirtos_tivac_2_14_00_10/products/bios_6_42_01_20/packages/ti/targets/arm/elf/package.xs
+/Users/prichards/ti/tirtos_tivac_2_16_00_08/products/bios_6_45_01_29/packages/ti/targets/ITarget.xs:
+package.mak: /Users/prichards/ti/tirtos_tivac_2_16_00_08/products/bios_6_45_01_29/packages/ti/targets/ITarget.xs
+/Users/prichards/ti/tirtos_tivac_2_16_00_08/products/bios_6_45_01_29/packages/ti/targets/C28_large.xs:
+package.mak: /Users/prichards/ti/tirtos_tivac_2_16_00_08/products/bios_6_45_01_29/packages/ti/targets/C28_large.xs
+/Users/prichards/ti/tirtos_tivac_2_16_00_08/products/bios_6_45_01_29/packages/ti/targets/C28_float.xs:
+package.mak: /Users/prichards/ti/tirtos_tivac_2_16_00_08/products/bios_6_45_01_29/packages/ti/targets/C28_float.xs
+/Users/prichards/ti/tirtos_tivac_2_16_00_08/products/bios_6_45_01_29/packages/ti/targets/package.xs:
+package.mak: /Users/prichards/ti/tirtos_tivac_2_16_00_08/products/bios_6_45_01_29/packages/ti/targets/package.xs
+/Users/prichards/ti/tirtos_tivac_2_16_00_08/products/bios_6_45_01_29/packages/ti/targets/arm/elf/IArm.xs:
+package.mak: /Users/prichards/ti/tirtos_tivac_2_16_00_08/products/bios_6_45_01_29/packages/ti/targets/arm/elf/IArm.xs
+/Users/prichards/ti/tirtos_tivac_2_16_00_08/products/bios_6_45_01_29/packages/ti/targets/arm/elf/package.xs:
+package.mak: /Users/prichards/ti/tirtos_tivac_2_16_00_08/products/bios_6_45_01_29/packages/ti/targets/arm/elf/package.xs
 package.mak: package.bld
-C:/ti/xdctools_3_31_01_33_core/packages/xdc/tools/configuro/template/compiler.opt.xdt:
-package.mak: C:/ti/xdctools_3_31_01_33_core/packages/xdc/tools/configuro/template/compiler.opt.xdt
-C:/ti/xdctools_3_31_01_33_core/packages/xdc/services/io/File.xs:
-package.mak: C:/ti/xdctools_3_31_01_33_core/packages/xdc/services/io/File.xs
-C:/ti/xdctools_3_31_01_33_core/packages/xdc/services/io/package.xs:
-package.mak: C:/ti/xdctools_3_31_01_33_core/packages/xdc/services/io/package.xs
-C:/ti/xdctools_3_31_01_33_core/packages/xdc/tools/configuro/template/compiler.defs.xdt:
-package.mak: C:/ti/xdctools_3_31_01_33_core/packages/xdc/tools/configuro/template/compiler.defs.xdt
-C:/ti/xdctools_3_31_01_33_core/packages/xdc/tools/configuro/template/custom.mak.exe.xdt:
-package.mak: C:/ti/xdctools_3_31_01_33_core/packages/xdc/tools/configuro/template/custom.mak.exe.xdt
-C:/ti/xdctools_3_31_01_33_core/packages/xdc/tools/configuro/template/package.xs.xdt:
-package.mak: C:/ti/xdctools_3_31_01_33_core/packages/xdc/tools/configuro/template/package.xs.xdt
+/Applications/ti/xdctools_3_32_02_25_core/packages/xdc/tools/configuro/template/compiler.opt.xdt:
+package.mak: /Applications/ti/xdctools_3_32_02_25_core/packages/xdc/tools/configuro/template/compiler.opt.xdt
+/Applications/ti/xdctools_3_32_02_25_core/packages/xdc/services/io/File.xs:
+package.mak: /Applications/ti/xdctools_3_32_02_25_core/packages/xdc/services/io/File.xs
+/Applications/ti/xdctools_3_32_02_25_core/packages/xdc/services/io/package.xs:
+package.mak: /Applications/ti/xdctools_3_32_02_25_core/packages/xdc/services/io/package.xs
+/Applications/ti/xdctools_3_32_02_25_core/packages/xdc/tools/configuro/template/compiler.defs.xdt:
+package.mak: /Applications/ti/xdctools_3_32_02_25_core/packages/xdc/tools/configuro/template/compiler.defs.xdt
+/Applications/ti/xdctools_3_32_02_25_core/packages/xdc/tools/configuro/template/custom.mak.exe.xdt:
+package.mak: /Applications/ti/xdctools_3_32_02_25_core/packages/xdc/tools/configuro/template/custom.mak.exe.xdt
+/Applications/ti/xdctools_3_32_02_25_core/packages/xdc/tools/configuro/template/package.xs.xdt:
+package.mak: /Applications/ti/xdctools_3_32_02_25_core/packages/xdc/tools/configuro/template/package.xs.xdt
 endif
 
-ti.targets.arm.elf.M4F.rootDir ?= C:/ti/ccsv6/tools/compiler/ti-cgt-arm_5.2.5
-ti.targets.arm.elf.packageBase ?= C:/ti/tirtos_tivac_2_14_00_10/products/bios_6_42_01_20/packages/ti/targets/arm/elf/
+ti.targets.arm.elf.M4F.rootDir ?= /Applications/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.5.LTS
+ti.targets.arm.elf.packageBase ?= /Users/prichards/ti/tirtos_tivac_2_16_00_08/products/bios_6_45_01_29/packages/ti/targets/arm/elf/
 .PRECIOUS: $(XDCCFGDIR)/%.oem4f
 .PHONY: all,em4f .dlls,em4f .executables,em4f test,em4f
 all,em4f: .executables,em4f
@@ -128,74 +128,73 @@ package/%.xdc.inc package/%_configPkg.c package/%.defs.h: %.xdc $(PKGCFGS)
 	@$(MSG) generating interfaces for package configPkg" (because $@ is older than $(firstword $?))" ...
 	$(XSRUN) -f xdc/services/intern/cmd/build.xs $(MK_IDLOPTS) -m package/package.xdc.dep -i package/package.xdc.inc package.xdc
 
-.dlls,em4f .dlls: acsndSensor.pem4f
+.dlls,em4f .dlls: acsnb-sensor-tiva.pem4f
 
--include package/cfg/acsndSensor_pem4f.mak
--include package/cfg/acsndSensor_pem4f.cfg.mak
+-include package/cfg/acsnb-sensor-tiva_pem4f.mak
+-include package/cfg/acsnb-sensor-tiva_pem4f.cfg.mak
 ifeq (,$(MK_NOGENDEPS))
--include package/cfg/acsndSensor_pem4f.dep
+-include package/cfg/acsnb-sensor-tiva_pem4f.dep
 endif
-acsndSensor.pem4f: package/cfg/acsndSensor_pem4f.xdl
+acsnb-sensor-tiva.pem4f: package/cfg/acsnb-sensor-tiva_pem4f.xdl
 	@
 
 
 ifeq (,$(wildcard .libraries,em4f))
-acsndSensor.pem4f package/cfg/acsndSensor_pem4f.c: .libraries,em4f
+acsnb-sensor-tiva.pem4f package/cfg/acsnb-sensor-tiva_pem4f.c: .libraries,em4f
 endif
 
-package/cfg/acsndSensor_pem4f.c package/cfg/acsndSensor_pem4f.h package/cfg/acsndSensor_pem4f.xdl: override _PROG_NAME := acsndSensor.xem4f
-package/cfg/acsndSensor_pem4f.c: package/cfg/acsndSensor_pem4f.cfg
-package/cfg/acsndSensor_pem4f.xdc.inc: package/cfg/acsndSensor_pem4f.xdl
-package/cfg/acsndSensor_pem4f.xdl package/cfg/acsndSensor_pem4f.c: .interfaces
+package/cfg/acsnb-sensor-tiva_pem4f.c package/cfg/acsnb-sensor-tiva_pem4f.h package/cfg/acsnb-sensor-tiva_pem4f.xdl: override _PROG_NAME := acsnb-sensor-tiva.xem4f
+package/cfg/acsnb-sensor-tiva_pem4f.c: package/cfg/acsnb-sensor-tiva_pem4f.cfg
+package/cfg/acsnb-sensor-tiva_pem4f.xdc.inc: package/cfg/acsnb-sensor-tiva_pem4f.xdl
+package/cfg/acsnb-sensor-tiva_pem4f.xdl package/cfg/acsnb-sensor-tiva_pem4f.c: .interfaces
 
 clean:: clean,em4f
-	-$(RM) package/cfg/acsndSensor_pem4f.cfg
-	-$(RM) package/cfg/acsndSensor_pem4f.dep
-	-$(RM) package/cfg/acsndSensor_pem4f.c
-	-$(RM) package/cfg/acsndSensor_pem4f.xdc.inc
+	-$(RM) package/cfg/acsnb-sensor-tiva_pem4f.cfg
+	-$(RM) package/cfg/acsnb-sensor-tiva_pem4f.dep
+	-$(RM) package/cfg/acsnb-sensor-tiva_pem4f.c
+	-$(RM) package/cfg/acsnb-sensor-tiva_pem4f.xdc.inc
 
 clean,em4f::
-	-$(RM) acsndSensor.pem4f
-.executables,em4f .executables: acsndSensor.xem4f
+	-$(RM) acsnb-sensor-tiva.pem4f
+.executables,em4f .executables: acsnb-sensor-tiva.xem4f
 
-acsndSensor.xem4f: |acsndSensor.pem4f
+acsnb-sensor-tiva.xem4f: |acsnb-sensor-tiva.pem4f
 
--include package/cfg/acsndSensor.xem4f.mak
-acsndSensor.xem4f: package/cfg/acsndSensor_pem4f.oem4f 
+-include package/cfg/acsnb-sensor-tiva.xem4f.mak
+acsnb-sensor-tiva.xem4f: package/cfg/acsnb-sensor-tiva_pem4f.oem4f 
 	$(RM) $@
 	@$(MSG) lnkem4f $@ ...
 	$(RM) $(XDCCFGDIR)/$@.map
-	$(ti.targets.arm.elf.M4F.rootDir)/bin/armlnk -w -q -u _c_int00 -fs $(XDCCFGDIR)$(dir $@).  -q -o $@ package/cfg/acsndSensor_pem4f.oem4f   package/cfg/acsndSensor_pem4f.xdl --silicon_version=7M4 --strict_compatibility=on -c -m $(XDCCFGDIR)/$@.map -l $(ti.targets.arm.elf.M4F.rootDir)/lib/libc.a
+	$(ti.targets.arm.elf.M4F.rootDir)/bin/armcl -fs $(XDCCFGDIR)$(dir $@) -q -u _c_int00 --silicon_version=7M4 -z --strict_compatibility=on  -o $@ package/cfg/acsnb-sensor-tiva_pem4f.oem4f   package/cfg/acsnb-sensor-tiva_pem4f.xdl  -w -c -m $(XDCCFGDIR)/$@.map -l $(ti.targets.arm.elf.M4F.rootDir)/lib/libc.a
 	
-acsndSensor.xem4f: export C_DIR=
-acsndSensor.xem4f: PATH:=$(ti.targets.arm.elf.M4F.rootDir)/bin/;$(PATH)
-acsndSensor.xem4f: Path:=$(ti.targets.arm.elf.M4F.rootDir)/bin/;$(PATH)
+acsnb-sensor-tiva.xem4f: export C_DIR=
+acsnb-sensor-tiva.xem4f: PATH:=$(ti.targets.arm.elf.M4F.rootDir)/bin/:$(PATH)
 
-acsndSensor.test test,em4f test: acsndSensor.xem4f.test
+acsnb-sensor-tiva.test test,em4f test: acsnb-sensor-tiva.xem4f.test
 
-acsndSensor.xem4f.test:: acsndSensor.xem4f
+acsnb-sensor-tiva.xem4f.test:: acsnb-sensor-tiva.xem4f
 ifeq (,$(_TESTLEVEL))
-	@$(MAKE) -R -r --no-print-directory -f $(XDCROOT)/packages/xdc/bld/xdc.mak _TESTLEVEL=1 acsndSensor.xem4f.test
+	@$(MAKE) -R -r --no-print-directory -f $(XDCROOT)/packages/xdc/bld/xdc.mak _TESTLEVEL=1 acsnb-sensor-tiva.xem4f.test
 else
 	@$(MSG) running $<  ...
-	$(call EXEC.acsndSensor.xem4f, ) 
+	$(call EXEC.acsnb-sensor-tiva.xem4f, ) 
 endif
 
 clean,em4f::
-	-$(RM) $(wildcard .tmp,acsndSensor.xem4f,*)
+	-$(RM) $(wildcard .tmp,acsnb-sensor-tiva.xem4f,*)
 
 
 clean:: clean,em4f
 
 clean,em4f::
-	-$(RM) acsndSensor.xem4f
+	-$(RM) acsnb-sensor-tiva.xem4f
 %,copy:
 	@$(if $<,,$(MSG) don\'t know how to build $*; exit 1)
 	@$(MSG) cp $< $@
 	$(RM) $@
 	$(CP) $< $@
-acsndSensor_pem4f.oem4f,copy : package/cfg/acsndSensor_pem4f.oem4f
-acsndSensor_pem4f.sem4f,copy : package/cfg/acsndSensor_pem4f.sem4f
+acsnb-sensor-tiva_pem4f.oem4f,copy : package/cfg/acsnb-sensor-tiva_pem4f.oem4f
+acsnb-sensor-tiva_pem4f.sem4f,copy : package/cfg/acsnb-sensor-tiva_pem4f.sem4f
 
 $(XDCCFGDIR)%.c $(XDCCFGDIR)%.h $(XDCCFGDIR)%.xdl: $(XDCCFGDIR)%.cfg $(XDCROOT)/packages/xdc/cfg/Main.xs | .interfaces
 	@$(MSG) "configuring $(_PROG_NAME) from $< ..."

@@ -2,15 +2,15 @@
 # Automatically-generated file. Do not edit!
 ################################################################################
 
-CG_TOOL_ROOT := /Applications/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.1.LTS
+CG_TOOL_ROOT := /Applications/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.5.LTS
 
 GEN_OPTS__FLAG := --cmd_file="configPkg/compiler.opt"
 GEN_CMDS__FLAG := -l"configPkg/linker.cmd"
 
 ORDERED_OBJS += \
 "./EK_TM4C123.obj" \
-"./acsndSensor.obj" \
-"./acsndSensor_extras.obj" \
+"./acsnb-sensor-tiva.obj" \
+"./extras.obj" \
 "../tm4c1230e6pm.cmd" \
 $(GEN_CMDS__FLAG) \
 -llibc.a \
@@ -123,42 +123,42 @@ endif
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXE_OUTPUTS += \
-acsndSensor.out \
+acsnb-sensor-tiva.out \
 
 EXE_OUTPUTS__QUOTED += \
-"acsndSensor.out" \
+"acsnb-sensor-tiva.out" \
 
 BIN_OUTPUTS += \
-acsndSensor.hex \
+acsnb-sensor-tiva.hex \
 
 BIN_OUTPUTS__QUOTED += \
-"acsndSensor.hex" \
+"acsnb-sensor-tiva.hex" \
 
 
 # All Target
-all: acsndSensor.out
+all: acsnb-sensor-tiva.out
 
 # Tool invocations
-acsndSensor.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
+acsnb-sensor-tiva.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 	@echo 'Building target: "$@"'
 	@echo 'Invoking: ARM Linker'
-	"/Applications/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.1.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me -O4 --opt_for_speed=1 --fp_mode=strict --define=ccs="ccs" --define=ccs --define=TIVAWARE --define=PART_TM4C1230E6PM -g --gcc --diag_warning=225 --diag_warning=255 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi -z -m"acsndSensor.map" --heap_size=0 --stack_size=512 -i"/Applications/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.1.LTS/lib" -i"/Applications/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.1.LTS/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="acsndSensor_linkInfo.xml" --rom_model -o "acsndSensor.out" $(ORDERED_OBJS)
+	"/Applications/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.5.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me -O4 --opt_for_speed=1 --fp_mode=strict --define=ccs="ccs" --define=ccs --define=TIVAWARE --define=PART_TM4C1230E6PM -g --gcc --diag_warning=225 --diag_warning=255 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi -z -m"acsnb-sensor-tiva.map" --heap_size=0 --stack_size=512 -i"/Applications/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.5.LTS/lib" -i"/Applications/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.5.LTS/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="acsnb-sensor-tiva_linkInfo.xml" --rom_model -o "acsnb-sensor-tiva.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: "$@"'
 	@echo ' '
 
-acsndSensor.hex: $(EXE_OUTPUTS)
+acsnb-sensor-tiva.hex: $(EXE_OUTPUTS)
 	@echo 'Building files: $(strip $(EXE_OUTPUTS__QUOTED))'
 	@echo 'Invoking: ARM Hex Utility'
-	"/Applications/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.1.LTS/bin/armhex"  -o "acsndSensor.hex" $(EXE_OUTPUTS__QUOTED)
+	"/Applications/ti/ccsv8/tools/compiler/ti-cgt-arm_18.1.5.LTS/bin/armhex"  -o "acsnb-sensor-tiva.hex" $(EXE_OUTPUTS__QUOTED)
 	@echo 'Finished building: $(strip $(EXE_OUTPUTS__QUOTED))'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(GEN_CMDS__QUOTED)$(GEN_MISC_FILES__QUOTED)$(BIN_OUTPUTS__QUOTED)$(GEN_FILES__QUOTED)$(EXE_OUTPUTS__QUOTED)$(GEN_OPTS__QUOTED)
+	-$(RM) $(BIN_OUTPUTS__QUOTED)$(GEN_FILES__QUOTED)$(EXE_OUTPUTS__QUOTED)
+	-$(RM) "EK_TM4C123.obj" "acsnb-sensor-tiva.obj" "extras.obj" 
+	-$(RM) "EK_TM4C123.d" "acsnb-sensor-tiva.d" "extras.d" 
 	-$(RMDIR) $(GEN_MISC_DIRS__QUOTED)
-	-$(RM) "EK_TM4C123.obj" "acsndSensor.obj" "acsndSensor_extras.obj" 
-	-$(RM) "EK_TM4C123.d" "acsndSensor.d" "acsndSensor_extras.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 
