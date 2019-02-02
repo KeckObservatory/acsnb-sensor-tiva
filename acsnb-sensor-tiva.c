@@ -48,6 +48,10 @@
 #define MIN_TEMP_READ_PERIOD_MS   1000
 #define FILTER_COEFF              0.99333
 
+// Embed the sensor number in the signature bytes
+#define SIGNATURE0(s)            (0xA0 + s)
+#define SIGNATURE1(s)            (0x50 + s)
+
 // -----------------------------------------------------------------------------
 // HDC1080 - Temperature and humidity sensor
 #define HDC1080_ADDR              0x40
@@ -204,9 +208,9 @@ SPI_Transaction slaveTransaction1;
 union spiMessageOut_u {
 
   struct {
-    // Bytes 0 and 1 are free to use
-    uint8_t free0;
-    uint8_t free1;
+    // Bytes 0 and 1 are a signature pattern with the sensor number in it
+    uint8_t signature0;
+    uint8_t signature1;
 
     // Bytes 2 and 3 are the temperature
     uint8_t humidityHigh;
@@ -714,6 +718,10 @@ void taskI2Ccommon(taskParams p) {
         /* A conversion has completed and interrupted.  Clear it and read out the converted value */
         if (*p.intflag == 1) {
 
+#ifdef DEBUG_INTERRUPT
+System_printf("Thread int flag 0\n"); System_flush();
+#endif
+
           // As long as interrupts are coming in, don't accumulate time
           p.inttime = 0;
 
@@ -752,6 +760,10 @@ void taskI2Ccommon(taskParams p) {
             System_printf("(%d) Timeout reading AD7746 device, re-initializing.\n", p.device);
             System_flush();
           }
+
+#ifdef DEBUG_INTERRUPT
+System_printf("Thread read 0\n"); System_flush();
+#endif
 
           Task_sleep(1);
 
@@ -800,9 +812,16 @@ void taskI2Ccommon(taskParams p) {
           // End of temperature/humidity conversion code.
           // --------------------------------------------------------------------------------------
 
+          // Setup interrupt for next conversion completion
+          GPIO_clearInt(p.intline);
+          GPIO_enableInt(p.intline);
 
           // Trigger the next conversion
           if (p.capreads++ == AD7746_CAP_VS_TEMP_TRIGGER_INTERVAL) {
+
+#ifdef DEBUG_INTERRUPT
+System_printf("Trigger temp 0\n"); System_flush();
+#endif
 
             // Every Nth capacitance reading, trigger a temperature conversion instead
             if (triggerAD7746temperature(p.handle, p.trans, p.device) == -1) {
@@ -815,6 +834,10 @@ void taskI2Ccommon(taskParams p) {
 
           } else {
 
+#ifdef DEBUG_INTERRUPT
+System_printf("Trigger cap 0\n"); System_flush();
+#endif
+
             // Normal case is to trigger capacitance reads over and over
             if (triggerAD7746capacitance(p.handle, p.trans, adAllSensorConversionTime, p.cap, p.device) == -1) {
               p.state = tsRunFailed;
@@ -826,14 +849,13 @@ void taskI2Ccommon(taskParams p) {
 
           Task_sleep(1);
 
-          // Setup interrupt for next conversion completion
-          GPIO_clearInt(p.intline);
-          GPIO_enableInt(p.intline);
-
           p.inttime += 3;
           p.temptime += 3;
         }
 
+        /* Make sure the signature bytes in the message are correct */
+        spiMessageOut.sensor[p.device].signature0   = SIGNATURE0(p.device);
+        spiMessageOut.sensor[p.device].signature1   = SIGNATURE1(p.device);
         break;
 
 
@@ -847,6 +869,8 @@ void taskI2Ccommon(taskParams p) {
         /* Get access to resource */
         Semaphore_pend(semHandle, BIOS_WAIT_FOREVER);
 
+        spiMessageOut.sensor[p.device].signature0   = SIGNATURE0(p.device);
+        spiMessageOut.sensor[p.device].signature1   = SIGNATURE1(p.device);
         spiMessageOut.sensor[p.device].diffCapHigh  = 0;
         spiMessageOut.sensor[p.device].diffCapMid   = 0;
         spiMessageOut.sensor[p.device].diffCapLow   = 0;
@@ -1246,7 +1270,6 @@ int readAD7746(I2C_Handle i2c, I2C_Transaction i2cTransaction, adCapSelect cap, 
     return -1;
   }
 
-
   /* Get access to resource */
   Semaphore_pend(semHandle, BIOS_WAIT_FOREVER);
 
@@ -1543,7 +1566,11 @@ int switchPCA9536(I2C_Handle i2c, I2C_Transaction i2cTransaction, uint8_t device
  *  ======== sensNcvtDoneItr ========
  *  Callback functions for the GPIO interrupts, set a flag for the task to see
  */
-void sens0cvtDoneItr(uint32_t index) { intflag0 = true; } // PA7
+void sens0cvtDoneItr(uint32_t index) { intflag0 = true;
+#ifdef DEBUG_INTERRUPT
+System_printf("INT0\n");
+#endif
+} // PA7
 void sens1cvtDoneItr(uint32_t index) { intflag1 = true; } // PF4
 void sens2cvtDoneItr(uint32_t index) { intflag2 = true; } // D7
 void sens3cvtDoneItr(uint32_t index) { intflag3 = true; } // E0
