@@ -38,12 +38,22 @@
 /* Board Header file */
 #include "Board.h"
 
+// Uncomment this line to enable debugging a single port in CC Studio, with diagnostic printfs
+//#define DEBUG_INTERRUPT 1
 
 // -----------------------------------------------------------------------------
 // High level defines
 #define MAX_SENSORS               6
+
+#ifdef DEBUG_INTERRUPT
 #define MAX_SENSOR_TIMEOUT_MS     5000
 #define MAX_FAILED_INIT_WAIT_MS   5000
+#else
+// Run the sensor timeouts faster when debugging
+#define MAX_SENSOR_TIMEOUT_MS     1000
+#define MAX_FAILED_INIT_WAIT_MS   1000
+#endif
+
 #define MIN_TASK_SLEEP_MS         1
 #define MIN_TEMP_READ_PERIOD_MS   1000
 #define FILTER_COEFF              0.99333
@@ -148,8 +158,8 @@ typedef enum {
 } adConversionTime;
 
 // Conversion time is selected via the SPI interface
-#define FAST_CONVERSION_TIME adct38msSingle
-#define DEFAULT_CONVERSION_TIME adct109msSingle
+#define FAST_CONVERSION_TIME      adct38msSingle
+#define DEFAULT_CONVERSION_TIME   adct109msSingle
 adConversionTime adAllSensorConversionTime = DEFAULT_CONVERSION_TIME;
 
 
@@ -573,6 +583,14 @@ void taskI2Ccommon(taskParams p) {
       // ------------------------------------------------
       case tsPOR:
 
+#ifdef DEBUG_INTERRUPT
+        // Skip over all but device 0 when debugging
+        if (p.device != 0) break;
+#endif
+
+        System_printf("(%d) Init device I2C.\n", p.device);
+        System_flush();
+
         /* Create I2C for usage */
         I2C_Params_init(&p.i2cparams);
 
@@ -587,8 +605,10 @@ void taskI2Ccommon(taskParams p) {
           System_abort("(%d) Error initializing I2C.\n");
         }
 
+
         /* Power on reset state; drop into init immediately, don't even need to break */
         p.state = tsInit;
+
 
       // ------------------------------------------------
       case tsInit:
@@ -596,8 +616,12 @@ void taskI2Ccommon(taskParams p) {
 
         /* Setup ACS connection relay control device */
         if (setupPCA9536(p.handle, p.trans, p.device) == -1) {
+
+#ifndef DEBUG_INTERRUPT
+          // Suppress these during debugging
           System_printf("(%d) Error initializing PCA9536 relay controller.\n", p.device);
           System_flush();
+#endif
 
           /* Skip to init failed state to wait for next init pass */
           p.state = tsInitFailed;
@@ -1461,8 +1485,10 @@ int setupPCA9536(I2C_Handle i2c, I2C_Transaction i2cTransaction, uint8_t device)
   txBuffer[0] = PCA9536_OUT_PORT_REG;
   txBuffer[1] = PCA9536_OUT_PORT_RESET;
   if (!I2C_transfer(i2c, &i2cTransaction)) {
+#ifndef DEBUG_INTERRUPT
     System_printf("(%d) Error in setup of PCA9536, initial reset of output ports.\n", device);
     System_flush();
+#endif
     return -1;
   }
   Task_sleep(100);
