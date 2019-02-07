@@ -155,28 +155,39 @@ void EK_TM4C123_initGeneral(void)
  */
 GPIO_PinConfig gpioPinConfigs[] = {
     /* Input pins */
-    /* EK_TM4C123_GPIO_PININ0 */
-  GPIOTiva_PA_7 | GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_FALLING,
-  /* EK_TM4C123_GPIO_PININ1 */
-  GPIOTiva_PF_4 | GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_FALLING,
-  /* EK_TM4C123_GPIO_PININ2 */
-  GPIOTiva_PD_7 | GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_FALLING,
-  /* EK_TM4C123_GPIO_PININ3 */
-  GPIOTiva_PE_0 | GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_FALLING,
-  /* EK_TM4C123_GPIO_PININ4 */
 
-  /* EK_TM4C123_GPIO_PININ5 */
-  GPIOTiva_PC_4 | GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_FALLING,
-  GPIOTiva_PB_5 | GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_FALLING,
+    /* EK_TM4C123_GPIO_PININ0 */
+    GPIOTiva_PA_7 | GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_RISING,
+
+    /* EK_TM4C123_GPIO_PININ1 */
+    GPIOTiva_PB_5 | GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_RISING,
+
+    /* EK_TM4C123_GPIO_PININ2 */
+    GPIOTiva_PC_4 | GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_RISING,
+
+    /* EK_TM4C123_GPIO_PININ3 */
+    GPIOTiva_PD_7 | GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_RISING,
+
+    /* EK_TM4C123_GPIO_PININ4 */
+    GPIOTiva_PE_0 | GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_RISING,
+
+    /* EK_TM4C123_GPIO_PININ5 */
+    GPIOTiva_PF_4 | GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_RISING,
+
+
     /* Output pins */
+
     /* EK_TM4C123_LED_ORANGE */
     GPIOTiva_PD_0 | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_HIGH | GPIO_CFG_OUT_LOW,
+
     /* EK_TM4C123_LED_GREEN */
     GPIOTiva_PD_1 | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_HIGH | GPIO_CFG_OUT_LOW,
+
     /* EK_TM4C123_LED_BLUE */
     GPIOTiva_PD_2 | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_HIGH | GPIO_CFG_OUT_LOW,
-  /* EK_TM4C123_LED_RED */
-  GPIOTiva_PD_3 | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_HIGH | GPIO_CFG_OUT_LOW
+
+    /* EK_TM4C123_LED_RED */
+    GPIOTiva_PD_3 | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_HIGH | GPIO_CFG_OUT_LOW
 };
 
 /*
@@ -187,11 +198,11 @@ GPIO_PinConfig gpioPinConfigs[] = {
  *       reduce memory usage (if placed at end of gpioPinConfigs array).
  */
 GPIO_CallbackFxn gpioCallbackFunctions[] = {
-  NULL,  /* EK_TM4C123_GPIO_PININ0 */
-  NULL,  /* EK_TM4C123_GPIO_PININ1 */
-  NULL,  /* EK_TM4C123_GPIO_PININ2 */
-  NULL,  /* EK_TM4C123_GPIO_PININ3 */
-  NULL,  /* EK_TM4C123_GPIO_PININ4 */
+    NULL,  /* EK_TM4C123_GPIO_PININ0 */
+    NULL,  /* EK_TM4C123_GPIO_PININ1 */
+    NULL,  /* EK_TM4C123_GPIO_PININ2 */
+    NULL,  /* EK_TM4C123_GPIO_PININ3 */
+    NULL,  /* EK_TM4C123_GPIO_PININ4 */
     NULL   /* EK_TM4C123_GPIO_PININ5 */
 };
 
@@ -210,8 +221,8 @@ const GPIOTiva_Config GPIOTiva_config = {
 void EK_TM4C123_initGPIO(void)
 {
     /*PD7 requires unlocking before configuration */
-  HWREG(GPIO_PORTD_BASE + GPIO_O_LOCK) = GPIO_LOCK_KEY;
-  HWREG(GPIO_PORTD_BASE + GPIO_O_CR) |= GPIO_PIN_7;
+    HWREG(GPIO_PORTD_BASE + GPIO_O_LOCK) = GPIO_LOCK_KEY;
+    HWREG(GPIO_PORTD_BASE + GPIO_O_CR) |= GPIO_PIN_7;
 
     /* Initialize peripheral and pins */
     GPIO_init();
@@ -234,9 +245,9 @@ I2CTiva_Object i2cTivaObjects[EK_TM4C123_I2CCOUNT];
 
 /* I2C configuration structure, describing which pins are to be used */
 const I2CTiva_HWAttrs i2cTivaHWAttrs[EK_TM4C123_I2CCOUNT] = {
-  {I2C0_BASE, INT_I2C0, ~0 /* Interrupt priority */},
+    {I2C0_BASE, INT_I2C0, ~0 /* Interrupt priority */},
     {I2C1_BASE, INT_I2C1, ~0 /* Interrupt priority */},
-  {I2C2_BASE, INT_I2C2, ~0 /* Interrupt priority */},
+    {I2C2_BASE, INT_I2C2, ~0 /* Interrupt priority */},
     {I2C3_BASE, INT_I2C3, ~0 /* Interrupt priority */},
     {I2C4_BASE, INT_I2C4, ~0 /* Interrupt priority */},
     {I2C5_BASE, INT_I2C5, ~0 /* Interrupt priority */},
@@ -245,10 +256,10 @@ const I2CTiva_HWAttrs i2cTivaHWAttrs[EK_TM4C123_I2CCOUNT] = {
 const I2C_Config I2C_config[] = {
     {&I2CTiva_fxnTable, &i2cTivaObjects[0], &i2cTivaHWAttrs[0]},
     {&I2CTiva_fxnTable, &i2cTivaObjects[1], &i2cTivaHWAttrs[1]},
-  {&I2CTiva_fxnTable, &i2cTivaObjects[2], &i2cTivaHWAttrs[2]},
-  {&I2CTiva_fxnTable, &i2cTivaObjects[3], &i2cTivaHWAttrs[3]},
-  {&I2CTiva_fxnTable, &i2cTivaObjects[4], &i2cTivaHWAttrs[4]},
-  {&I2CTiva_fxnTable, &i2cTivaObjects[5], &i2cTivaHWAttrs[5]},
+    {&I2CTiva_fxnTable, &i2cTivaObjects[2], &i2cTivaHWAttrs[2]},
+    {&I2CTiva_fxnTable, &i2cTivaObjects[3], &i2cTivaHWAttrs[3]},
+    {&I2CTiva_fxnTable, &i2cTivaObjects[4], &i2cTivaHWAttrs[4]},
+    {&I2CTiva_fxnTable, &i2cTivaObjects[5], &i2cTivaHWAttrs[5]},
     {NULL, NULL, NULL}
 };
 
