@@ -43,6 +43,12 @@
 
 // -----------------------------------------------------------------------------
 // High level defines
+
+// Firmware revision is 0-0-2 (as of 2019-02-07 PMR)
+#define FIRMWARE_REV_0 0
+#define FIRMWARE_REV_1 0
+#define FIRMWARE_REV_2 2
+
 #define MAX_SENSORS               6
 
 #ifdef DEBUG_INTERRUPT
@@ -58,9 +64,9 @@
 #define MIN_TEMP_READ_PERIOD_MS   1000
 #define FILTER_COEFF              0.99333
 
-// Embed the sensor number in the signature bytes
-#define SIGNATURE0(s)            (0xA0 + s)
-#define SIGNATURE1(s)            (0x50 + s)
+// Signature pattern to determine if it's a real message
+#define SIGNATURE0               (0xA5)
+#define SIGNATURE1               (0x5A)
 
 // -----------------------------------------------------------------------------
 // HDC1080 - Temperature and humidity sensor
@@ -218,46 +224,54 @@ SPI_Transaction slaveTransaction1;
 union spiMessageOut_u {
 
   struct {
-    // Bytes 0 and 1 are a signature pattern with the sensor number in it
-    uint8_t signature0;
-    uint8_t signature1;
 
-    // Bytes 2 and 3 are the temperature
-    uint8_t humidityHigh;
-    uint8_t humidityLow;
+      // 5 bytes of Header information first
+      uint8_t signature0;
+      uint8_t signature1;
+      uint8_t version0;
+      uint8_t version1;
+      uint8_t version2;
 
-    // Bytes 4, 5 and 6 are the differential capacitance, a 24 bit value
-    uint8_t diffCapHigh;
-    uint8_t diffCapMid;
-    uint8_t diffCapLow;
+      struct {
 
-    // Bytes 7, 8 and 9 are the C1 cap single capacitance
-    uint8_t c1High;
-    uint8_t c1Mid;
-    uint8_t c1Low;
+        // Bytes 0 and 1 are the temperature
+        uint8_t humidityHigh;
+        uint8_t humidityLow;
 
-    // Bytes 10, 11 and 12 are the C2 cap single capacitance
-    uint8_t c2High;
-    uint8_t c2Mid;
-    uint8_t c2Low;
+        // Bytes 2, 3 and 4 are the differential capacitance, a 24 bit value
+        uint8_t diffCapHigh;
+        uint8_t diffCapMid;
+        uint8_t diffCapLow;
 
-    // Byte 13, 14 and 15 are the filtered differential capacitance, a 24 bit value
-    uint8_t filtCapHigh;
-    uint8_t filtCapMid;
-    uint8_t filtCapLow;
+        // Bytes 5, 6 and 7 are the C1 cap single capacitance
+        uint8_t c1High;
+        uint8_t c1Mid;
+        uint8_t c1Low;
 
-    // Bytes 16, 17 are the temperature
-    uint8_t tempHigh;
-    uint8_t tempLow;
+        // Bytes 8, 9 and 10 are the C2 cap single capacitance
+        uint8_t c2High;
+        uint8_t c2Mid;
+        uint8_t c2Low;
 
-    // Bytes 18, 19, and 20 are the on-chip temperature from the capacitance sensor
-    uint8_t chiptempHigh;
-    uint8_t chiptempMid;
-    uint8_t chiptempLow;
+        // Byte 11, 12 and 13 are the filtered differential capacitance, a 24 bit value
+        uint8_t filtCapHigh;
+        uint8_t filtCapMid;
+        uint8_t filtCapLow;
 
-  } sensor[MAX_SENSORS];
+        // Bytes 14, 15 are the temperature
+        uint8_t tempHigh;
+        uint8_t tempLow;
 
-  uint8_t buf[MAX_SENSORS * 21];
+        // Bytes 16, 17, and 18 are the on-chip temperature from the capacitance sensor
+        uint8_t chiptempHigh;
+        uint8_t chiptempMid;
+        uint8_t chiptempLow;
+
+      } sensor[MAX_SENSORS];
+
+  } msg;
+
+  uint8_t buf[5 + (MAX_SENSORS * 19)];
 
 } __attribute__((packed));
 
@@ -605,6 +619,13 @@ void taskI2Ccommon(taskParams p) {
           System_abort("(%d) Error initializing I2C.\n");
         }
 
+        // Pre-load the message header so all messages going out (even if sensors are disconnected)
+        // are still valid.
+        spiMessageOut.msg.signature0 = SIGNATURE0;
+        spiMessageOut.msg.signature1 = SIGNATURE1;
+        spiMessageOut.msg.version0   = FIRMWARE_REV_0;
+        spiMessageOut.msg.version1   = FIRMWARE_REV_1;
+        spiMessageOut.msg.version2   = FIRMWARE_REV_2;
 
         /* Power on reset state; drop into init immediately, don't even need to break */
         p.state = tsInit;
@@ -822,10 +843,10 @@ System_printf("Thread read 0\n"); System_flush();
                 /* Get access to resource */
                 Semaphore_pend(semHandle, BIOS_WAIT_FOREVER);
 
-                spiMessageOut.sensor[p.device].tempHigh     = 0;
-                spiMessageOut.sensor[p.device].tempLow      = 0;
-                spiMessageOut.sensor[p.device].humidityHigh = 0;
-                spiMessageOut.sensor[p.device].humidityLow  = 0;
+                spiMessageOut.msg.sensor[p.device].tempHigh     = 0;
+                spiMessageOut.msg.sensor[p.device].tempLow      = 0;
+                spiMessageOut.msg.sensor[p.device].humidityHigh = 0;
+                spiMessageOut.msg.sensor[p.device].humidityLow  = 0;
 
                 /* Unlock resource */
                 Semaphore_post(semHandle);
@@ -877,9 +898,6 @@ System_printf("Trigger cap 0\n"); System_flush();
           p.temptime += 3;
         }
 
-        /* Make sure the signature bytes in the message are correct */
-        spiMessageOut.sensor[p.device].signature0   = SIGNATURE0(p.device);
-        spiMessageOut.sensor[p.device].signature1   = SIGNATURE1(p.device);
         break;
 
 
@@ -893,24 +911,27 @@ System_printf("Trigger cap 0\n"); System_flush();
         /* Get access to resource */
         Semaphore_pend(semHandle, BIOS_WAIT_FOREVER);
 
-        spiMessageOut.sensor[p.device].signature0   = SIGNATURE0(p.device);
-        spiMessageOut.sensor[p.device].signature1   = SIGNATURE1(p.device);
-        spiMessageOut.sensor[p.device].diffCapHigh  = 0;
-        spiMessageOut.sensor[p.device].diffCapMid   = 0;
-        spiMessageOut.sensor[p.device].diffCapLow   = 0;
-        spiMessageOut.sensor[p.device].c1High       = 0;
-        spiMessageOut.sensor[p.device].c1Mid        = 0;
-        spiMessageOut.sensor[p.device].c1Low        = 0;
-        spiMessageOut.sensor[p.device].c2High       = 0;
-        spiMessageOut.sensor[p.device].c2Mid        = 0;
-        spiMessageOut.sensor[p.device].c2Low        = 0;
-        spiMessageOut.sensor[p.device].tempHigh     = 0;
-        spiMessageOut.sensor[p.device].tempLow      = 0;
-        spiMessageOut.sensor[p.device].humidityHigh = 0;
-        spiMessageOut.sensor[p.device].humidityLow  = 0;
-        spiMessageOut.sensor[p.device].chiptempHigh = 0;
-        spiMessageOut.sensor[p.device].chiptempMid  = 0;
-        spiMessageOut.sensor[p.device].chiptempLow  = 0;
+        spiMessageOut.msg.signature0                    = SIGNATURE0;
+        spiMessageOut.msg.signature1                    = SIGNATURE1;
+        spiMessageOut.msg.version0                      = FIRMWARE_REV_0;
+        spiMessageOut.msg.version1                      = FIRMWARE_REV_1;
+        spiMessageOut.msg.version2                      = FIRMWARE_REV_2;
+        spiMessageOut.msg.sensor[p.device].diffCapHigh  = 0;
+        spiMessageOut.msg.sensor[p.device].diffCapMid   = 0;
+        spiMessageOut.msg.sensor[p.device].diffCapLow   = 0;
+        spiMessageOut.msg.sensor[p.device].c1High       = 0;
+        spiMessageOut.msg.sensor[p.device].c1Mid        = 0;
+        spiMessageOut.msg.sensor[p.device].c1Low        = 0;
+        spiMessageOut.msg.sensor[p.device].c2High       = 0;
+        spiMessageOut.msg.sensor[p.device].c2Mid        = 0;
+        spiMessageOut.msg.sensor[p.device].c2Low        = 0;
+        spiMessageOut.msg.sensor[p.device].tempHigh     = 0;
+        spiMessageOut.msg.sensor[p.device].tempLow      = 0;
+        spiMessageOut.msg.sensor[p.device].humidityHigh = 0;
+        spiMessageOut.msg.sensor[p.device].humidityLow  = 0;
+        spiMessageOut.msg.sensor[p.device].chiptempHigh = 0;
+        spiMessageOut.msg.sensor[p.device].chiptempMid  = 0;
+        spiMessageOut.msg.sensor[p.device].chiptempLow  = 0;
 
         /* Unlock resource */
         Semaphore_post(semHandle);
@@ -1302,9 +1323,9 @@ int readAD7746(I2C_Handle i2c, I2C_Transaction i2cTransaction, adCapSelect cap, 
 
     // Differential capacitor value
     case adcsC2D1:
-      spiMessageOut.sensor[device].diffCapHigh = rxBuffer[0];
-      spiMessageOut.sensor[device].diffCapMid  = rxBuffer[1];
-      spiMessageOut.sensor[device].diffCapLow  = rxBuffer[2];
+      spiMessageOut.msg.sensor[device].diffCapHigh = rxBuffer[0];
+      spiMessageOut.msg.sensor[device].diffCapMid  = rxBuffer[1];
+      spiMessageOut.msg.sensor[device].diffCapLow  = rxBuffer[2];
 
       // Calculate the capacitance as a float, for usage in the filtered value
       cr = (float) ((rxBuffer[0] << 16) + (rxBuffer[1] << 8) + (rxBuffer[2]));
@@ -1321,30 +1342,30 @@ int readAD7746(I2C_Handle i2c, I2C_Transaction i2cTransaction, adCapSelect cap, 
       ci = (uint32_t) c;
 
       // Assign back to the messaging buffer
-      spiMessageOut.sensor[device].filtCapHigh = (ci >> 16) & 0xFF;
-      spiMessageOut.sensor[device].filtCapMid  = (ci >>  8) & 0xFF;
-      spiMessageOut.sensor[device].filtCapLow  = (ci      ) & 0xFF;
+      spiMessageOut.msg.sensor[device].filtCapHigh = (ci >> 16) & 0xFF;
+      spiMessageOut.msg.sensor[device].filtCapMid  = (ci >>  8) & 0xFF;
+      spiMessageOut.msg.sensor[device].filtCapLow  = (ci      ) & 0xFF;
       break;
 
     // Single C1 value
     case adcsC1D0:
-      spiMessageOut.sensor[device].c1High = rxBuffer[0];
-      spiMessageOut.sensor[device].c1Mid  = rxBuffer[1];
-      spiMessageOut.sensor[device].c1Low  = rxBuffer[2];
+      spiMessageOut.msg.sensor[device].c1High = rxBuffer[0];
+      spiMessageOut.msg.sensor[device].c1Mid  = rxBuffer[1];
+      spiMessageOut.msg.sensor[device].c1Low  = rxBuffer[2];
       break;
 
     // Single C2 value:
     case adcsC2D0:
-      spiMessageOut.sensor[device].c2High = rxBuffer[0];
-      spiMessageOut.sensor[device].c2Mid  = rxBuffer[1];
-      spiMessageOut.sensor[device].c2Low  = rxBuffer[2];
+      spiMessageOut.msg.sensor[device].c2High = rxBuffer[0];
+      spiMessageOut.msg.sensor[device].c2Mid  = rxBuffer[1];
+      spiMessageOut.msg.sensor[device].c2Low  = rxBuffer[2];
       break;
   }
 
   // Put the temperature values in each time, even if they're stale
-  spiMessageOut.sensor[device].chiptempHigh = rxBuffer[3];
-  spiMessageOut.sensor[device].chiptempMid  = rxBuffer[4];
-  spiMessageOut.sensor[device].chiptempLow  = rxBuffer[5];
+  spiMessageOut.msg.sensor[device].chiptempHigh = rxBuffer[3];
+  spiMessageOut.msg.sensor[device].chiptempMid  = rxBuffer[4];
+  spiMessageOut.msg.sensor[device].chiptempLow  = rxBuffer[5];
 
   /* Unlock resource */
   Semaphore_post(semHandle);
@@ -1438,10 +1459,10 @@ int readHDC1080 (I2C_Handle i2c, I2C_Transaction i2cTransaction, uint8_t device)
   /* Get access to resource */
   Semaphore_pend(semHandle, BIOS_WAIT_FOREVER);
 
-  spiMessageOut.sensor[device].tempHigh = rxBuffer[0];
-  spiMessageOut.sensor[device].tempLow = rxBuffer[1];
-  spiMessageOut.sensor[device].humidityHigh = rxBuffer[2];
-  spiMessageOut.sensor[device].humidityLow = rxBuffer[3];
+  spiMessageOut.msg.sensor[device].tempHigh     = rxBuffer[0];
+  spiMessageOut.msg.sensor[device].tempLow      = rxBuffer[1];
+  spiMessageOut.msg.sensor[device].humidityHigh = rxBuffer[2];
+  spiMessageOut.msg.sensor[device].humidityLow  = rxBuffer[3];
 
   /* Unlock resource */
   Semaphore_post(semHandle);
