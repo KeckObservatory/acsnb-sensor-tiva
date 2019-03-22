@@ -59,6 +59,8 @@
 
 #include "EK_TM4C123.h"
 
+/* Define this for code to be compiled to run on the previous board (rev IV) */
+//#define ACSNB_PROTO_IV_BOARD_COMPAT 1
 
 #ifndef TI_DRIVERS_UART_DMA
 #define TI_DRIVERS_UART_DMA 0
@@ -156,6 +158,28 @@ void EK_TM4C123_initGeneral(void)
 GPIO_PinConfig gpioPinConfigs[] = {
     /* Input pins */
 
+/* Retain ability for this code to be compiled to run on the previous board (rev IV) */
+#ifdef ACSNB_PROTO_IV_BOARD_COMPAT
+
+    /* EK_TM4C123_GPIO_PININ0 */
+    GPIOTiva_PA_7 | GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_FALLING,
+
+    /* EK_TM4C123_GPIO_PININ1 */
+    GPIOTiva_PF_4 | GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_FALLING,
+
+    /* EK_TM4C123_GPIO_PININ2 */
+    GPIOTiva_PD_7 | GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_FALLING,
+
+    /* EK_TM4C123_GPIO_PININ3 */
+    GPIOTiva_PE_0 | GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_FALLING,
+
+    /* EK_TM4C123_GPIO_PININ4 */
+    GPIOTiva_PC_4 | GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_FALLING,
+
+    /* EK_TM4C123_GPIO_PININ5 */
+    GPIOTiva_PB_5 | GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_FALLING,
+
+#else
     /* EK_TM4C123_GPIO_PININ0 */
     GPIOTiva_PA_7 | GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_RISING,
 
@@ -173,7 +197,7 @@ GPIO_PinConfig gpioPinConfigs[] = {
 
     /* EK_TM4C123_GPIO_PININ5 */
     GPIOTiva_PF_4 | GPIO_CFG_IN_PU | GPIO_CFG_IN_INT_RISING,
-
+#endif
 
     /* Output pins */
 

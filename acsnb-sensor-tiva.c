@@ -44,10 +44,10 @@
 // -----------------------------------------------------------------------------
 // High level defines
 
-// Firmware revision is 0-0-2 (as of 2019-02-07 PMR)
+// Firmware revision is 0-0-3 (as of 2019-02-21 PMR)
 #define FIRMWARE_REV_0 0
 #define FIRMWARE_REV_1 0
-#define FIRMWARE_REV_2 2
+#define FIRMWARE_REV_2 3
 
 #define MAX_SENSORS               6
 
@@ -417,6 +417,7 @@ int readAD7746(I2C_Handle i2c, I2C_Transaction i2cTransaction, adCapSelect cap, 
 
 int setupHDC1080(I2C_Handle i2c, I2C_Transaction i2cTransaction, uint8_t device, bool reportfail);
 int readHDC1080(I2C_Handle i2c, I2C_Transaction i2cTransaction, uint8_t device);
+int readSi7020(I2C_Handle i2c, I2C_Transaction i2cTransaction, uint8_t device);
 
 int setupPCA9536(I2C_Handle i2c, I2C_Transaction i2cTransaction, uint8_t device);
 int switchPCA9536(I2C_Handle i2c, I2C_Transaction i2cTransaction, uint8_t device, swRelayPositions pos);
@@ -669,6 +670,8 @@ void taskI2Ccommon(taskParams p) {
           p.hdc1080initialized = true;
         }
 
+        p.hdc1080initialized = true;
+
         /* Got this far, it's now safe to start the device messaging */
         p.state = tsStart;
 
@@ -835,7 +838,9 @@ System_printf("Thread read 0\n"); System_flush();
             } else {
 
               // Attempt to read temp/humidity; if it fails, hold the values in reset
-              if (readHDC1080(p.handle, p.trans, p.device) == -1) {
+              //if (readHDC1080(p.handle, p.trans, p.device) == -1) {
+              if (readSi7020(p.handle, p.trans, p.device) == -1) {
+
                 p.hdc1080initialized = false;
                 System_printf("(%d) HDC1080 temperature/humidity sensor DISCONNECTED!\n", p.device);
                 System_flush();
@@ -1484,6 +1489,81 @@ int readHDC1080 (I2C_Handle i2c, I2C_Transaction i2cTransaction, uint8_t device)
   }
 
   return 0;
+}
+
+/*
+ *  ======== readSi7020 ========
+ *  function to read Si7020 Si7020Temp & Si7020Hum
+ *
+ */
+// Si7020_A
+#define Si7020_ADDR          0x40
+#define Si7020_HUM_HOLD      0xE5
+#define Si7020_HUM_NO_HOLD   0xF5
+#define Si7020_TMP_HOLD      0xE3
+#define Si7020_TMP_NO_HOLD   0xF3
+#define Si7020_TMP_PREVIOUS  0xF0
+#define Si7020_RESET         0xFE
+#define Si7020_WRITE_USER_1  0xE6
+#define Si7020_WRITE_USER_2  0x51
+#define Si7020_READ_HEATER   0x11
+
+int readSi7020 (I2C_Handle i2c, I2C_Transaction i2cTransaction, uint8_t device)
+{
+    uint8_t         txBuffer[1];
+    uint8_t         rxBuffer[2];
+    float t, h;
+
+    /* Read Si7020 Si7020Temp */
+    txBuffer[0]                 = Si7020_TMP_HOLD;
+    i2cTransaction.slaveAddress = Si7020_ADDR;
+    i2cTransaction.writeBuf     = txBuffer;
+    i2cTransaction.writeCount   = 1;
+    i2cTransaction.readBuf      = rxBuffer;
+    i2cTransaction.readCount    = 2;
+    if (!I2C_transfer(i2c, &i2cTransaction))
+    {
+    System_printf("readSi7020: Error 1\n");
+    System_flush();
+    return -1;
+    }
+    //Si7020Temp = (float)((rxBuffer[0] << 8) + (rxBuffer[1]))*175.2/65536-46.85;
+    t = (float)((rxBuffer[0] << 8) + (rxBuffer[1]))*175.72/65536-46.85;
+
+    spiMessageOut.msg.sensor[device].tempHigh     = rxBuffer[0];
+    spiMessageOut.msg.sensor[device].tempLow      = rxBuffer[1];
+
+    /* Read Si7020 Si7020Hum */
+    txBuffer[0]                 = Si7020_HUM_HOLD;
+    i2cTransaction.slaveAddress = Si7020_ADDR;
+    i2cTransaction.writeBuf     = txBuffer;
+    i2cTransaction.writeCount   = 1;
+    i2cTransaction.readBuf      = rxBuffer;
+    i2cTransaction.readCount    = 2;
+    if (!I2C_transfer(i2c, &i2cTransaction))
+    {
+    System_printf("readSi7020: Error 2\n");
+    System_flush();
+    return -1;
+    }
+
+    //Si7020Hum = (float)((rxBuffer[0] << 8) + (rxBuffer[1]))*125/65536-6;
+    h = (float)((rxBuffer[0] << 8) + (rxBuffer[1]))*125/65536-6;
+    System_printf("(%d) temp = %f / humidity = %f\n", device, t, h);
+    System_flush();
+
+
+    /* Get access to resource */
+    Semaphore_pend(semHandle, BIOS_WAIT_FOREVER);
+
+    spiMessageOut.msg.sensor[device].humidityHigh = rxBuffer[0];
+    spiMessageOut.msg.sensor[device].humidityLow  = rxBuffer[1];
+
+    /* Unlock resource */
+    Semaphore_post(semHandle);
+
+
+    return 0;
 }
 
 
