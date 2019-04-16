@@ -44,10 +44,10 @@
 // -----------------------------------------------------------------------------
 // High level defines
 
-// Firmware revision is 0-0-3 (as of 2019-02-21 PMR)
+// Firmware revision is 0-0-4 (as of 2019-04-10 PMR)
 #define FIRMWARE_REV_0 0
 #define FIRMWARE_REV_1 0
-#define FIRMWARE_REV_2 3
+#define FIRMWARE_REV_2 4
 
 #define MAX_SENSORS               6
 
@@ -342,7 +342,7 @@ bool intflag3 = false;
 bool intflag4 = false;
 bool intflag5 = false;
 
-
+int currentSwitchPosition = PCA9536_OUT_PORT_NEW_ACS;
 // -----------------------------------------------------------------------------
 // Task control structure
 
@@ -1604,7 +1604,7 @@ int setupPCA9536(I2C_Handle i2c, I2C_Transaction i2cTransaction, uint8_t device)
   Task_sleep(100);
 
   txBuffer[0] = PCA9536_OUT_PORT_REG;
-  txBuffer[1] = PCA9536_OUT_PORT_NEW_ACS;
+  txBuffer[1] = currentSwitchPosition;
   if (!I2C_transfer(i2c, &i2cTransaction)) {
     System_printf("(%d) Error in setup of PCA9536, set of output ports to new ACS.\n", device);
     System_flush();
@@ -1651,6 +1651,7 @@ int switchPCA9536(I2C_Handle i2c, I2C_Transaction i2cTransaction, uint8_t device
       System_flush();
       return -1;
     }
+    currentSwitchPosition = PCA9536_OUT_PORT_NEW_ACS;
     GPIO_write(Board_LED3, Board_LED_ON);
 
   /* Else default to old ACS position */
@@ -1663,6 +1664,7 @@ int switchPCA9536(I2C_Handle i2c, I2C_Transaction i2cTransaction, uint8_t device
       System_flush();
       return -1;
     }
+    currentSwitchPosition = PCA9536_OUT_PORT_OLD_ACS;
     GPIO_write(Board_LED3, Board_LED_OFF);
   }
 
