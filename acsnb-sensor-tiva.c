@@ -44,10 +44,10 @@
 // -----------------------------------------------------------------------------
 // High level defines
 
-// Firmware revision is 0-0-4 (as of 2019-04-10 PMR)
+// Firmware revision is 0-0-5 (as of 2019-04-22 PMR)
 #define FIRMWARE_REV_0 0
 #define FIRMWARE_REV_1 0
-#define FIRMWARE_REV_2 4
+#define FIRMWARE_REV_2 5
 
 #define MAX_SENSORS               6
 
@@ -1603,6 +1603,10 @@ int setupPCA9536(I2C_Handle i2c, I2C_Transaction i2cTransaction, uint8_t device)
   }
   Task_sleep(100);
 
+#ifdef ZERO
+  // This code is disabled for now, to ensure the states of the relays don't change while working
+  // with the Kona and LBL node boxes at summit (normally happens on a Tiva reset).  PMR 2019-04-22
+
   txBuffer[0] = PCA9536_OUT_PORT_REG;
   txBuffer[1] = currentSwitchPosition;
   if (!I2C_transfer(i2c, &i2cTransaction)) {
@@ -1620,6 +1624,8 @@ int setupPCA9536(I2C_Handle i2c, I2C_Transaction i2cTransaction, uint8_t device)
     System_flush();
     return -1;
   }
+
+#endif
 
   return 0;
 }
