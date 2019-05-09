@@ -44,10 +44,10 @@
 // -----------------------------------------------------------------------------
 // High level defines
 
-// Firmware revision is 0-0-5 (as of 2019-04-22 PMR)
+// Firmware revision as of 2019-05-01 (PMR)
 #define FIRMWARE_REV_0 0
 #define FIRMWARE_REV_1 0
-#define FIRMWARE_REV_2 5
+#define FIRMWARE_REV_2 6
 
 #define MAX_SENSORS               6
 
@@ -284,11 +284,14 @@ spiMessageOut_t spiMessageOut;
 union spiMessageIn_u {
   struct {
 
-    /* Currently only the first 4 bytes are used for commanding the device */
+    /* First 4 bytes are used for commanding the device */
     uint8_t cmd0;
     uint8_t cmd1;
     uint8_t cmd2;
     uint8_t cmd3;
+
+    /* Subsequent bytes are for settings that are broadcast every messaging cycle */
+    uint8_t useFastConversionTime;
   };
 
   /* Make the input buffer match the size of the output by mapping an array on top of it */
@@ -491,29 +494,38 @@ void slaveTaskFxn (UArg arg0, UArg arg1) {
       Semaphore_post(semHandle);
 
     }
+
+    /* Each message from the BBB will indicate if fast or slow conversion is being used */
+    if ((bool) spiMessageIn.useFastConversionTime) {
+
+        /* Use fast conversion time (38.0ms i.e 26.3Hz) */
+        adAllSensorConversionTime = FAST_CONVERSION_TIME; // adct38msSingle
+
+    } else {
+
+        /* Use slow conversion time (109ms i.e 9Hz) */
+        adAllSensorConversionTime = DEFAULT_CONVERSION_TIME; // adct109msSingle
+    }
+
   }
 
 }
 
 
 /*
- * List of command, first bit should be 1
+ * List of command, first byte should be 1
  * - 110 use all old switch
  * - 111X use particular switch (0 = all new [for legacy compatibility], else bit position indicates on/off values)
- * - 1011 fast conv time
- * - 1010 slow cnv time
  * - 12X retrieve differential capacitance only
  * - 13X retrieve diff plus both single capacitances
  */
 void slaveTaskCommand(void) {
 
-  bool switchToNew, switchAllToOld, switchAllToNew, useFastConvTime, useSlowConvTime, getDiffOnly, getAllCaps;
+  bool switchToNew, switchAllToOld, switchAllToNew, getDiffOnly, getAllCaps;
   uint8_t diffDevice;
 
   switchAllToOld  = (spiMessageIn.cmd0 == 1) && (spiMessageIn.cmd1 == 1) && (spiMessageIn.cmd2 == 0);
   switchToNew     = (spiMessageIn.cmd0 == 1) && (spiMessageIn.cmd1 == 1) && (spiMessageIn.cmd2 == 1);
-  useFastConvTime = (spiMessageIn.cmd0 == 1) && (spiMessageIn.cmd1 == 0) && (spiMessageIn.cmd2 == 1) && (spiMessageIn.cmd3 == 1);
-  useSlowConvTime = (spiMessageIn.cmd0 == 1) && (spiMessageIn.cmd1 == 0) && (spiMessageIn.cmd2 == 1) && (spiMessageIn.cmd3 == 0);
   getDiffOnly     = (spiMessageIn.cmd0 == 1) && (spiMessageIn.cmd1 == 2);
   getAllCaps      = (spiMessageIn.cmd0 == 1) && (spiMessageIn.cmd1 == 3);
 
@@ -560,16 +572,6 @@ void slaveTaskCommand(void) {
     switchNew3 = swOldACS;
     switchNew4 = swOldACS;
     switchNew5 = swOldACS;
-
-  // Use fast conversion time (38.0ms i.e 26.3Hz)
-  } else if (useFastConvTime) {
-
-    adAllSensorConversionTime = FAST_CONVERSION_TIME; // adct38msSingle
-
-  // Use slow conversion time (109ms i.e 9Hz)
-  } else if (useSlowConvTime) {
-
-    adAllSensorConversionTime = DEFAULT_CONVERSION_TIME; // adct109msSingle
 
   } else if (getDiffOnly) {
 
